@@ -5,6 +5,7 @@ This repository aims to be(come) a long term transparency report into the Dark B
 Published transparency reports:
 
 - [Hardware security modules](./hsms)
+- [Cryptographic public keys](./keys)
 
 ---
 
