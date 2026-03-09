@@ -2,10 +2,10 @@
 
 The project's root security is based on a number of hardware signers, currently all of them [Yubico YubiHSM 2](https://www.yubico.com/products/hardware-security-module/) and [Yubico YubiKey](https://www.yubico.com/products/yubikey-5-overview/) devices:
 
-|      Type      |  Serial  | Firmware | FIPS |                       Authenticity                       |                       Connectivity                       |            Annotated Logs            |
-|:--------------:|:--------:|:--------:|:----:|:--------------------------------------------------------:|:--------------------------------------------------------:|:------------------------------------:|
-|   YubiHSM 2    | 31650558 |   v2.4   |  No  | [31650558-auth.cert](./certs/yubihsm-31650558-auth.cert) | [31650558-conn.cert](./certs/yubihsm-31650558-conn.cert) | [31650558-logs.md](31650558-logs.md) |
-| YubiKey 5 Nano | 33265034 |  v5.7.4  |  -   |      [33265034.cert](./certs/yubikey-33265034.cert)      |                           n/a                            |                 n/a                  |
+|      Type      |  Serial  | Firmware | FIPS |                       Authenticity                       |                       Connectivity                       |                 Annotated Logs                 |
+|:--------------:|:--------:|:--------:|:----:|:--------------------------------------------------------:|:--------------------------------------------------------:|:----------------------------------------------:|
+|   YubiHSM 2    | 31650558 |   v2.4   |  No  | [31650558-auth.cert](./certs/yubihsm-31650558-auth.cert) | [31650558-conn.cert](./certs/yubihsm-31650558-conn.cert) | [31650558-logs.md](./logs/yubihsm-31650558.md) |
+| YubiKey 5 Nano | 33265034 |  v5.7.4  |  -   |      [33265034.cert](./certs/yubikey-33265034.cert)      |                           n/a                            |                      n/a                       |
 
 ## YubiHSM genuinity attestations
 
