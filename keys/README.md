@@ -98,9 +98,11 @@ The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
 
 All Ark enclaves have a unique xDSA identity (composite ML-DSA with Ed25519) burnt into their computing chip, signed by a root attestation xDSA key. The Ed25519 part is signed via YubiKeys (with keys generated on the YK and certified so) whereas the ML-DSA is signed in software only due to no YK capability at the time of writing.
 
-|    Series     |                                      xDSA Pubkey                                       |                                      ML-DSA Pubkey                                       |                                      Ed25519 Pubkey                                      |                                       YubiKey Ed25519 Certificate                                        |
-|:-------------:|:--------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
-| Ark I - alpha | [`deviceattest-ark1-alpha.xdsa.pub`](../hsms/attests/deviceattest-ark1-alpha.xdsa.pub) | [`deviceattest-ark1-alpha.mldsa.pub`](../hsms/attests/deviceattest-ark1-alpha.mldsa.pub) | [`deviceattest-ark1-alpha.eddsa.pub`](../hsms/attests/deviceattest-ark1-alpha.eddsa.pub) | [`deviceattest-ark1-alpha.eddsa.attest.cert`](../hsms/attests/deviceattest-ark1-alpha.eddsa.attest.cert) |
+|     Series      |                                        xDSA Pubkey                                         |                                        ML-DSA Pubkey                                         |                                        Ed25519 Pubkey                                        |                                         YubiKey Ed25519 Certificate                                          |
+|:---------------:|:------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:|
+|  Ark I - alpha  |   [`deviceattest-ark1-alpha.xdsa.pub`](../hsms/attests/deviceattest-ark1-alpha.xdsa.pub)   |   [`deviceattest-ark1-alpha.mldsa.pub`](../hsms/attests/deviceattest-ark1-alpha.mldsa.pub)   |   [`deviceattest-ark1-alpha.eddsa.pub`](../hsms/attests/deviceattest-ark1-alpha.eddsa.pub)   |   [`deviceattest-ark1-alpha.eddsa.attest.cert`](../hsms/attests/deviceattest-ark1-alpha.eddsa.attest.cert)   |
+| Ark I - friend  |  [`deviceattest-ark1-friend.xdsa.pub`](../hsms/attests/deviceattest-ark1-friend.xdsa.pub)  |  [`deviceattest-ark1-friend.mldsa.pub`](../hsms/attests/deviceattest-ark1-friend.mldsa.pub)  |  [`deviceattest-ark1-friend.eddsa.pub`](../hsms/attests/deviceattest-ark1-friend.eddsa.pub)  |  [`deviceattest-ark1-friend.eddsa.attest.cert`](../hsms/attests/deviceattest-ark1-friend.eddsa.attest.cert)  |
+| Ark I - founder | [`deviceattest-ark1-founder.xdsa.pub`](../hsms/attests/deviceattest-ark1-founder.xdsa.pub) | [`deviceattest-ark1-founder.mldsa.pub`](../hsms/attests/deviceattest-ark1-founder.mldsa.pub) | [`deviceattest-ark1-founder.eddsa.pub`](../hsms/attests/deviceattest-ark1-founder.eddsa.pub) | [`deviceattest-ark1-founder.eddsa.attest.cert`](../hsms/attests/deviceattest-ark1-founder.eddsa.attest.cert) |
 
 You can verify the attestation chain from Yubico to the firmware-update EdDSA keys:
 
@@ -112,8 +114,26 @@ $ openssl verify -CAfile ../hsms/certs/yubico-yubikey-ca.cert \
     ../hsms/attests/deviceattest-ark1-alpha.eddsa.attest.cert
 ../hsms/attests/deviceattest-ark1-alpha.eddsa.attest.cert: OK
 
+$ openssl verify -CAfile ../hsms/certs/yubico-yubikey-ca.cert \
+    -untrusted ../hsms/certs/yubico-yubikey-int.cert \
+    -untrusted ../hsms/certs/yubikey-33265034.cert \
+    ../hsms/attests/deviceattest-ark1-friend.eddsa.attest.cert
+../hsms/attests/deviceattest-ark1-friend.eddsa.attest.cert: OK
+
+$ openssl verify -CAfile ../hsms/certs/yubico-yubikey-ca.cert \
+    -untrusted ../hsms/certs/yubico-yubikey-int.cert \
+    -untrusted ../hsms/certs/yubikey-33265034.cert \
+    ../hsms/attests/deviceattest-ark1-founder.eddsa.attest.cert
+../hsms/attests/deviceattest-ark1-founder.eddsa.attest.cert: OK
+
 # Print the certificate / pubkey details
 $ openssl x509 -in ../hsms/attests/deviceattest-ark1-alpha.eddsa.attest.cert --noout --text
+[...]
+
+$ openssl x509 -in ../hsms/attests/deviceattest-ark1-friend.eddsa.attest.cert --noout --text
+[...]
+
+$ openssl x509 -in ../hsms/attests/deviceattest-ark1-founder.eddsa.attest.cert --noout --text
 [...]
 ```
 
