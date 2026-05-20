@@ -104,7 +104,7 @@ All Ark enclaves have a unique xDSA identity (composite ML-DSA with Ed25519) bur
 | Ark I - friend  |  [`deviceattest-ark1-friend.xdsa.pub`](../hsms/attests/deviceattest-ark1-friend.xdsa.pub)  |  [`deviceattest-ark1-friend.mldsa.pub`](../hsms/attests/deviceattest-ark1-friend.mldsa.pub)  |  [`deviceattest-ark1-friend.eddsa.pub`](../hsms/attests/deviceattest-ark1-friend.eddsa.pub)  |  [`deviceattest-ark1-friend.eddsa.attest.cert`](../hsms/attests/deviceattest-ark1-friend.eddsa.attest.cert)  |
 | Ark I - founder | [`deviceattest-ark1-founder.xdsa.pub`](../hsms/attests/deviceattest-ark1-founder.xdsa.pub) | [`deviceattest-ark1-founder.mldsa.pub`](../hsms/attests/deviceattest-ark1-founder.mldsa.pub) | [`deviceattest-ark1-founder.eddsa.pub`](../hsms/attests/deviceattest-ark1-founder.eddsa.pub) | [`deviceattest-ark1-founder.eddsa.attest.cert`](../hsms/attests/deviceattest-ark1-founder.eddsa.attest.cert) |
 
-You can verify the attestation chain from Yubico to the firmware-update EdDSA keys:
+You can verify the attestation chain from Yubico to the device-attestation EdDSA keys:
 
 ```sh
 # Verify the certificate chain
