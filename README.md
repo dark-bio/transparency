@@ -1,6 +1,6 @@
 # Dark Bio Transparency Reports
 
-This repository aims to be(come) a long term transparency report into the Dark Bio project, enabling external observers to audit cryptographic protocols, secret key handling and other aspects deemed relevant to publish. Whilst we make no commitments on open sourcing specific components, we commit to (try to) keep the system publicly verifiable and accountable.
+This repository aims to become a long-term transparency report into the Dark Bio project, enabling external observers to audit cryptographic protocols, secret key handling and other aspects deemed relevant to publish. While we make no commitments on open sourcing specific components, we commit to keeping the system publicly verifiable and accountable.
 
 Published transparency reports:
 
