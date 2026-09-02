@@ -165,7 +165,14 @@ The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
 
 ## Internal keys
 
-The develop and staging environments have their own root attestation keys mirroring the production ones. All are held in software only and are published for reference, no production Ark, emulator or cloud trusts them.
+The develop and staging environments have their own secure boot, firmware update and root attestation keys mirroring the production ones. All are held in software only and are published for reference, no production Ark, emulator or cloud trusts them.
+
+
+|   Purpose   | Environment |                                     RSA-2048 Pubkey                                     |
+|:-----------:|:-----------:|:---------------------------------------------------------------------------------------:|
+| Secure boot |   Develop   | [`secureboot-ark1-develop.rsa.pub`](./pubkeys/internal/secureboot-ark1-develop.rsa.pub) |
+| Secure boot |   Staging   | [`secureboot-ark1-staging.rsa.pub`](./pubkeys/internal/secureboot-ark1-staging.rsa.pub) |
+
 
 |       Purpose        | Environment |                                              xDSA Pubkey                                              |                                              ML-DSA Pubkey                                              |                                             Ed25519 Pubkey                                              |
 |:--------------------:|:-----------:|:-----------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|
@@ -175,5 +182,7 @@ The develop and staging environments have their own root attestation keys mirror
 | Emulator attestation |   Staging   | [`deviceattest-emulator-staging.xdsa.pub`](./pubkeys/internal/deviceattest-emulator-staging.xdsa.pub) | [`deviceattest-emulator-staging.mldsa.pub`](./pubkeys/internal/deviceattest-emulator-staging.mldsa.pub) | [`deviceattest-emulator-staging.eddsa.pub`](./pubkeys/internal/deviceattest-emulator-staging.eddsa.pub) |
 |  Cloud attestation   |   Develop   |           [`cloudattest-develop.xdsa.pub`](./pubkeys/internal/cloudattest-develop.xdsa.pub)           |           [`cloudattest-develop.mldsa.pub`](./pubkeys/internal/cloudattest-develop.mldsa.pub)           |           [`cloudattest-develop.eddsa.pub`](./pubkeys/internal/cloudattest-develop.eddsa.pub)           |
 |  Cloud attestation   |   Staging   |           [`cloudattest-staging.xdsa.pub`](./pubkeys/internal/cloudattest-staging.xdsa.pub)           |           [`cloudattest-staging.mldsa.pub`](./pubkeys/internal/cloudattest-staging.mldsa.pub)           |           [`cloudattest-staging.eddsa.pub`](./pubkeys/internal/cloudattest-staging.eddsa.pub)           |
+|   Firmware update    |   Develop   |   [`firmwareupdate-ark1-develop.xdsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.xdsa.pub)   |   [`firmwareupdate-ark1-develop.mldsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.mldsa.pub)   |   [`firmwareupdate-ark1-develop.eddsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.eddsa.pub)   |
+|   Firmware update    |   Staging   |   [`firmwareupdate-ark1-staging.xdsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.xdsa.pub)   |   [`firmwareupdate-ark1-staging.mldsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.mldsa.pub)   |   [`firmwareupdate-ark1-staging.eddsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.eddsa.pub)   |
 
 The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
