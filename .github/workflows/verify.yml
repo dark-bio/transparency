@@ -1,0 +1,21 @@
+name: verify
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  keys:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: keys/scripts/verify.sh
+
+  hsms:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sudo apt-get install -y xxd
+      - run: for log in hsms/logs/yubihsm-*.md; do hsms/scripts/extract.sh "$log" | hsms/scripts/verify.sh; done
