@@ -163,6 +163,16 @@ All Dark Bio cloud identities (composite ML-DSA with Ed25519) are rotated period
 
 The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
 
+## Notary attestation
+
+All Dark Bio notary keys (composite ML-DSA with Ed25519), which notarize Ark apps, are signed by a root attestation xDSA key. Both parts were generated in software and carry no hardware attestation, as the root is swappable via firmware updates.
+
+| Environment |                                xDSA Pubkey                                 |                                ML-DSA Pubkey                                 |                                Ed25519 Pubkey                                |
+|:-----------:|:--------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|
+|   Release   | [`notaryattest-release.xdsa.pub`](./pubkeys/notaryattest-release.xdsa.pub) | [`notaryattest-release.mldsa.pub`](./pubkeys/notaryattest-release.mldsa.pub) | [`notaryattest-release.eddsa.pub`](./pubkeys/notaryattest-release.eddsa.pub) |
+
+The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
+
 ## Internal keys
 
 The develop and staging environments have their own secure boot, firmware update and root attestation keys mirroring the production ones. All are held in software only and are published for reference, no production Ark, emulator or cloud trusts them.
@@ -182,6 +192,8 @@ The develop and staging environments have their own secure boot, firmware update
 | Emulator attestation |   Staging   | [`deviceattest-emulator-staging.xdsa.pub`](./pubkeys/internal/deviceattest-emulator-staging.xdsa.pub) | [`deviceattest-emulator-staging.mldsa.pub`](./pubkeys/internal/deviceattest-emulator-staging.mldsa.pub) | [`deviceattest-emulator-staging.eddsa.pub`](./pubkeys/internal/deviceattest-emulator-staging.eddsa.pub) |
 |  Cloud attestation   |   Develop   |           [`cloudattest-develop.xdsa.pub`](./pubkeys/internal/cloudattest-develop.xdsa.pub)           |           [`cloudattest-develop.mldsa.pub`](./pubkeys/internal/cloudattest-develop.mldsa.pub)           |           [`cloudattest-develop.eddsa.pub`](./pubkeys/internal/cloudattest-develop.eddsa.pub)           |
 |  Cloud attestation   |   Staging   |           [`cloudattest-staging.xdsa.pub`](./pubkeys/internal/cloudattest-staging.xdsa.pub)           |           [`cloudattest-staging.mldsa.pub`](./pubkeys/internal/cloudattest-staging.mldsa.pub)           |           [`cloudattest-staging.eddsa.pub`](./pubkeys/internal/cloudattest-staging.eddsa.pub)           |
+|  Notary attestation  |   Develop   |          [`notaryattest-develop.xdsa.pub`](./pubkeys/internal/notaryattest-develop.xdsa.pub)          |          [`notaryattest-develop.mldsa.pub`](./pubkeys/internal/notaryattest-develop.mldsa.pub)          |          [`notaryattest-develop.eddsa.pub`](./pubkeys/internal/notaryattest-develop.eddsa.pub)          |
+|  Notary attestation  |   Staging   |          [`notaryattest-staging.xdsa.pub`](./pubkeys/internal/notaryattest-staging.xdsa.pub)          |          [`notaryattest-staging.mldsa.pub`](./pubkeys/internal/notaryattest-staging.mldsa.pub)          |          [`notaryattest-staging.eddsa.pub`](./pubkeys/internal/notaryattest-staging.eddsa.pub)          |
 |   Firmware update    |   Develop   |   [`firmwareupdate-ark1-develop.xdsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.xdsa.pub)   |   [`firmwareupdate-ark1-develop.mldsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.mldsa.pub)   |   [`firmwareupdate-ark1-develop.eddsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.eddsa.pub)   |
 |   Firmware update    |   Staging   |   [`firmwareupdate-ark1-staging.xdsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.xdsa.pub)   |   [`firmwareupdate-ark1-staging.mldsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.mldsa.pub)   |   [`firmwareupdate-ark1-staging.eddsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.eddsa.pub)   |
 
