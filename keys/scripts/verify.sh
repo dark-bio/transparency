@@ -1,17 +1,20 @@
 #!/bin/sh
 # Verifies the consistency of the published key material against the hardware
 # attestations, so that the report can be audited with a single command using
-# nothing beyond openssl and the standard POSIX shell utilities:
+# openssl and the standard POSIX shell utilities:
 #
 #   - the HSM and YubiKey device certificates chain up to Yubico's roots
 #   - every key attestation certificate chains up to its signing device
 #   - every attestation certificate carries exactly the published public key
 #   - every composite xDSA public key is its published ML-DSA and Ed25519 parts
 #   - every published public key is listed with its fingerprint in the manifest
+#   - when Go is installed, every notary attestation verifies against its root,
+#     names its published key and has its UTC activation date in its file name
 #
-# The result is one row per device and per published key, with the attestation
-# column stating how far hardware vouches for the key (software-held keys have
-# no attestation at all, composite keys are attested as far as their parts).
+# The result is one row per device, per published key and per notary
+# attestation, with the attestation column stating how far hardware vouches for
+# a key (software-held keys have no attestation at all, composite keys are
+# attested as far as their parts).
 
 set -u
 cd "$(dirname "$0")/../.." || exit 1
@@ -123,6 +126,15 @@ composed() {
 	cmp -s "$scratch/composite" "$scratch/parts"
 }
 
+# notary builds the verifier once with the installed Go, which never downloads
+# another toolchain, and checks a notary attestation with it.
+notary() {
+	if [ ! -x "$scratch/notary" ]; then
+		GOTOOLCHAIN=local go -C keys/scripts/notary build -o "$scratch/notary" . || return 1
+	fi
+	"$scratch/notary" "$@"
+}
+
 # device names the hardware that attested a key, based on its certificates.
 device() {
 	case $1 in
@@ -222,6 +234,25 @@ printf '\n%-38s %s\n' 'Fingerprints' 'entries'
 [ "$(wc -l <keys/fingerprints.txt)" -eq "$keys" ]
 outcome $?
 printf '  %-36s %s\n' 'fingerprints.txt' "$outcome"
+
+# Check each notary attestation against the root and key in its environment
+printf '\n%-44s %-7s %s\n' 'Notary attestations' 'check' 'not before (UTC)'
+for att in keys/attests/notarysign-*.cwt keys/attests/internal/notarysign-*.cwt; do
+	[ -f "$att" ] || continue
+	path=${att#keys/attests/}
+	if ! command -v go >/dev/null 2>&1; then
+		printf '  %-42s %-7s %s\n' "$path" 'WARN' 'attestation not checked (Go unavailable)'
+		continue
+	fi
+	dir=$(dirname "keys/pubkeys/$path")
+	name=$(basename "$att" .cwt)
+	env=${name#notarysign-}
+	env=${env%-????-??-??}
+	nbf=$(notary "$dir/notaryattest-$env.xdsa.pub" "$dir/$name.xdsa.pub" "$att") &&
+		[ "$name" = "notarysign-$env-${nbf%%T*}" ]
+	outcome $?
+	printf '  %-42s %-7s %s\n' "$path" "$outcome" "$nbf"
+done
 
 if [ "$fails" -ne 0 ]; then
 	printf '\n%d check(s) failed\n' "$fails"

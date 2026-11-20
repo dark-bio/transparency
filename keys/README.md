@@ -2,7 +2,7 @@
 
 Keys are referenced throughout Dark Bio systems by their fingerprints, listed in [`fingerprints.txt`](./fingerprints.txt). The fingerprint of an xDSA, ML-DSA or Ed25519 key is the SHA-256 of the raw public key. The fingerprint of an RSA key is the SHA-256 of the little endian modulus and exponent, zero padded to 256 and 8 bytes.
 
-All keys in this report can be verified by hand with `openssl` as shown in each section, or in bulk via [`scripts/verify.sh`](./scripts/verify.sh), which checks the certificate chains, the pubkeys against their certificates, the xDSA compositions and the fingerprints.
+All keys in this report can be verified by hand with `openssl` as shown in each section, or in bulk via [`scripts/verify.sh`](./scripts/verify.sh), which checks the certificate chains, the pubkeys against their certificates, the xDSA compositions and the fingerprints. When Go is installed, it also checks each notary attestation against its root and its published notary key.
 
 ## Secure boot
 
@@ -165,11 +165,17 @@ The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
 
 ## Notary attestation
 
-All Dark Bio notary keys (composite ML-DSA with Ed25519), which notarize Ark apps, are signed by a root attestation xDSA key. Both parts were generated in software and carry no hardware attestation, as the root is swappable via firmware updates.
+All Dark Bio notary keys (composite ML-DSA with Ed25519), which notarize Ark apps, are signed by a root attestation xDSA key. Both parts were generated in software and carry no hardware attestation, as the root is swappable via firmware updates. Each attestation is a CBOR Web Token (CWT) carrying the notary key and its activation time (`nbf`).
 
 | Environment |                                xDSA Pubkey                                 |                                ML-DSA Pubkey                                 |                                Ed25519 Pubkey                                |
 |:-----------:|:--------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|
 |   Release   | [`notaryattest-release.xdsa.pub`](./pubkeys/notaryattest-release.xdsa.pub) | [`notaryattest-release.mldsa.pub`](./pubkeys/notaryattest-release.mldsa.pub) | [`notaryattest-release.eddsa.pub`](./pubkeys/notaryattest-release.eddsa.pub) |
+
+Each notary key is published under its activation date, and a new key adds files rather than replacing them.
+
+| Activated  |                                         xDSA Pubkey                                          |                                         ML-DSA Pubkey                                          |                                         Ed25519 Pubkey                                         |                                    Attestation                                     |
+|:----------:|:--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------:|
+| 2026-11-20 | [`notarysign-release-2026-11-20.xdsa.pub`](./pubkeys/notarysign-release-2026-11-20.xdsa.pub) | [`notarysign-release-2026-11-20.mldsa.pub`](./pubkeys/notarysign-release-2026-11-20.mldsa.pub) | [`notarysign-release-2026-11-20.eddsa.pub`](./pubkeys/notarysign-release-2026-11-20.eddsa.pub) | [`notarysign-release-2026-11-20.cwt`](./attests/notarysign-release-2026-11-20.cwt) |
 
 The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
 
@@ -194,7 +200,11 @@ The develop and staging environments have their own secure boot, firmware update
 |  Cloud attestation   |   Staging   |           [`cloudattest-staging.xdsa.pub`](./pubkeys/internal/cloudattest-staging.xdsa.pub)           |           [`cloudattest-staging.mldsa.pub`](./pubkeys/internal/cloudattest-staging.mldsa.pub)           |           [`cloudattest-staging.eddsa.pub`](./pubkeys/internal/cloudattest-staging.eddsa.pub)           |
 |  Notary attestation  |   Develop   |          [`notaryattest-develop.xdsa.pub`](./pubkeys/internal/notaryattest-develop.xdsa.pub)          |          [`notaryattest-develop.mldsa.pub`](./pubkeys/internal/notaryattest-develop.mldsa.pub)          |          [`notaryattest-develop.eddsa.pub`](./pubkeys/internal/notaryattest-develop.eddsa.pub)          |
 |  Notary attestation  |   Staging   |          [`notaryattest-staging.xdsa.pub`](./pubkeys/internal/notaryattest-staging.xdsa.pub)          |          [`notaryattest-staging.mldsa.pub`](./pubkeys/internal/notaryattest-staging.mldsa.pub)          |          [`notaryattest-staging.eddsa.pub`](./pubkeys/internal/notaryattest-staging.eddsa.pub)          |
+|      Notary key      |   Develop   | [`notarysign-develop-2026-11-20.xdsa.pub`](./pubkeys/internal/notarysign-develop-2026-11-20.xdsa.pub) | [`notarysign-develop-2026-11-20.mldsa.pub`](./pubkeys/internal/notarysign-develop-2026-11-20.mldsa.pub) | [`notarysign-develop-2026-11-20.eddsa.pub`](./pubkeys/internal/notarysign-develop-2026-11-20.eddsa.pub) |
+|      Notary key      |   Staging   | [`notarysign-staging-2026-11-20.xdsa.pub`](./pubkeys/internal/notarysign-staging-2026-11-20.xdsa.pub) | [`notarysign-staging-2026-11-20.mldsa.pub`](./pubkeys/internal/notarysign-staging-2026-11-20.mldsa.pub) | [`notarysign-staging-2026-11-20.eddsa.pub`](./pubkeys/internal/notarysign-staging-2026-11-20.eddsa.pub) |
 |   Firmware update    |   Develop   |   [`firmwareupdate-ark1-develop.xdsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.xdsa.pub)   |   [`firmwareupdate-ark1-develop.mldsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.mldsa.pub)   |   [`firmwareupdate-ark1-develop.eddsa.pub`](./pubkeys/internal/firmwareupdate-ark1-develop.eddsa.pub)   |
 |   Firmware update    |   Staging   |   [`firmwareupdate-ark1-staging.xdsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.xdsa.pub)   |   [`firmwareupdate-ark1-staging.mldsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.mldsa.pub)   |   [`firmwareupdate-ark1-staging.eddsa.pub`](./pubkeys/internal/firmwareupdate-ark1-staging.eddsa.pub)   |
+
+The internal notary keys' attestations are [`notarysign-develop-2026-11-20.cwt`](./attests/internal/notarysign-develop-2026-11-20.cwt) and [`notarysign-staging-2026-11-20.cwt`](./attests/internal/notarysign-staging-2026-11-20.cwt).
 
 The xDSA pubkey is `mldsa || eddsa` and is provided for convenience.
